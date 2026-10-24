@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全家便利商店冷藏櫃 × 匹克球拍翻牌打擊教案</title>
+  <style>
+    /* 核心重置與字型 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0b1120;
+      color: #f1f5f9;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1040px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* 頂部全家 Banner */
+    .header-card {
+      background-color: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+    }
+
+    .fm-bar {
+      height: 10px;
+      display: flex;
+      width: 100%;
+    }
+    .fm-blue { background-color: #007dc5; width: 50%; height: 100%; }
+    .fm-green { background-color: #00a040; width: 50%; height: 100%; }
+
+    .header-content {
+      padding: 18px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .badge-tag {
+      display: inline-block;
+      background-color: #00a040;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+
+    .sub-tag {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .title-h1 {
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      margin-top: 6px;
+    }
+
+    .title-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    /* 記分板 */
+    .score-board {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      padding: 10px 18px;
+      border-radius: 12px;
+    }
+
+    .score-item {
+      text-align: center;
+    }
+    .score-item:not(:last-child) {
+      padding-right: 16px;
+      border-right: 1px solid #334155;
+    }
+
+    .score-label {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+
+    .score-val {
+      font-size: 20px;
+      font-weight: 900;
+      font-family: monospace;
+      margin-top: 2px;
+    }
+    .val-yellow { color: #f59e0b; }
+    .val-green { color: #10b981; }
+    .val-blue { color: #38bdf8; }
+
+    /* 操作控制台 (Action Bar) */
+    .action-panel {
+      background-color: #1e293b;
+      border: 2px dashed #475569;
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .action-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background-color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      border: 1px solid #334155;
+    }
+
+    .action-step {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .action-msg {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 800;
+      transition: all 0.2s;
+    }
+    .btn-green {
+      background-color: #059669;
+      color: #fff;
+    }
+    .btn-green:hover { background-color: #10b981; }
+    .btn-red {
+      background-color: #dc2626;
+      color: #fff;
+    }
+    .btn-red:hover { background-color: #ef4444; }
+
+    /* 左右兩欄主網格 */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 4.8fr 7.2fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 左側：桌上區 */
+    .table-section {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .sec-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #f59e0b;
+    }
+
+    .sec-sub {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    /* 8 支球拍佈局：明確的 4 欄 × 2 列 */
+    .paddles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .paddle-card {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    .paddle-card:hover {
+      transform: translateY(-4px);
+    }
+    .paddle-card.collected {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .paddle-head {
+      width: 100%;
+      height: 94px;
+      border-radius: 14px 14px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4px;
+      transition: all 0.3s;
+    }
+
+    /* 蓋在桌上的球拍面 */
+    .face-down {
+      background: radial-gradient(circle at center, #334155, #0f172a);
+      border: 2px solid #64748b;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    /* 翻開後的不同球拍材質 */
+    .face-wood {
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      border: 2px solid #78350f;
+    }
+    .face-glass {
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      border: 2px solid #e0f2fe;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+    }
+    .face-carbon {
+      background: linear-gradient(135deg, #1e293b, #090d16);
+      border: 2px solid #22d3ee;
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.8);
+    }
+
+    .paddle-handle {
+      width: 12px;
+      height: 24px;
+      background: repeating-linear-gradient(45deg, #1e293b, #1e293b 3px, #475569 3px, #475569 6px);
+      border-radius: 0 0 4px 4px;
+      margin-top: 1px;
+    }
+
+    .table-footer {
+      border-top: 1px solid #334155;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    /* 右側：全家冷藏櫃 (4 欄 × 2 列) */
+    .fridge-section {
+      background-color: #0f172a;
+      border: 5px solid #334155;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .fridge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .fridge-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #10b981;
+      display: inline-block;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .fridge-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    @media (max-width: 600px) {
+      .fridge-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .shelf-cell {
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 10px 6px;
+      height: 125px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .shelf-cell.target-active {
+      border: 2px solid #38bdf8;
+      background: rgba(56, 189, 248, 0.2);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+    }
+
+    .shelf-cell.hit-locked {
+      border: 2px solid #10b981;
+      background: rgba(16, 185, 129, 0.25);
+      box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .cell-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+
+    .cell-icon {
+      font-size: 26px;
+      margin: 2px 0;
+    }
+
+    .cell-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .cell-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: #10b981;
+      margin-top: 2px;
+    }
+
+    .fridge-catch {
+      background-color: #1e293b;
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- 全家便利商店 招牌 Banner -->
+    <header class="header-card">
+      <div class="fm-bar">
+        <div class="fm-blue"></div>
+        <div class="fm-green"></div>
+      </div>
+      <div class="header-content">
+        <div>
+          <div>
+            <span class="badge-tag">FamilyMart</span>
+            <span class="sub-tag">福智青年社蔬食展 × 國中生趣味食安教案</span>
+          </div>
+          <h1 class="title-h1">【全家冷藏櫃 × 覆蓋球拍盲抽】打擊大對抗</h1>
+          <p class="title-desc">8 支球拍正面朝下蓋在桌上！翻牌 ➔ 認標章 ➔ 拿球打靶！打中收走，沒中蓋回！</p>
+        </div>
+
+        <!-- 記分與進度板 -->
+        <div class="score-board">
+          <div class="score-item">
+            <div class="score-label">總積分</div>
+            <div class="score-val val-yellow" id="score-text">0</div>
+          </div>
+          <div class="score-item">
+            <div class="score-label">已捕獲球拍</div>
+            <div class="score-val val-green" id="captured-count">0 / 8</div>
+          </div>
+          <div class="score-item">
+            <div class="score-label">桌上剩餘</div>
+            <div class="score-val val-blue" id="table-remaining">8 支</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 操作提示控制台 -->
+    <div class="action-panel" id="action-panel">
+      <div class="action-left">
+        <div class="action-icon" id="action-icon">👀</div>
+        <div>
+          <div class="action-step" id="action-step-title">步驟 1：請點選桌上覆蓋的球拍</div>
+          <div class="action-msg" id="action-instruction">學生衝上長桌，盲翻其中 1 支球拍看正面標章！</div>
+        </div>
+      </div>
+      <div class="action-btns" id="action-buttons">
+        <span style="font-size:12px; color:#94a3b8; padding:8px;">尚未翻開任何球拍</span>
+      </div>
+    </div>
+
+    <!-- 左右雙欄主視圖 -->
+    <div class="main-grid">
+
+      <!-- 左側：桌上 8 支球拍 (4 欄 × 2 列) -->
+      <section class="table-section">
+        <div>
+          <div class="section-header">
+            <span class="sec-title">🪵 【桌上檯面】8 支球拍蓋在桌上</span>
+            <span class="sec-sub">點擊 = 翻開球拍</span>
+          </div>
+          <div style="font-size:12px; color:#94a3b8; margin-bottom:8px;">
+            球拍背面完全相同，不知道哪支是特殊神拍！
+          </div>
+        </div>
+
+        <div class="paddles-grid">
+          <!-- Paddle 1 -->
+          <div class="paddle-card" id="p-card-1" onclick="selectPaddle(1)">
+            <div class="paddle-head face-down" id="p-head-1">
+              <span id="p-icon-1" style="font-size:20px;">❓</span>
+              <span id="p-name-1" style="font-size:11px; font-weight:800; margin-top:4px;">拍 #1</span>
+            </div>
+            <div class="paddle-handle"></div>
+          </div>
+          <!-- Paddle 2 -->
+          <div class="paddle-card" id="p-card-2" onclick="selectPaddle(2)">
+            <div class="paddle-head face-down" id="p-head-2">
+              <span id="p-icon-2" style="font-size:20px;">❓</span>
+              <span id="p-name-2" style="font-size:11px; font-weight:800; margin-top:4px;">拍 #2</span>
+            </div>
+            <div class="paddle-handle"></div>
+          </div>
+          <!-- Paddle 3 -->
+          <div class="paddle-card" id="p-card-3" onclick="selectPaddle(3)">
+            <div class="paddle-head face-down" id="p-head-3">
+              <span id="p-icon-3" style="font-size:20px;">❓</span>
+              <span id="p-name-3" style="font-size:11px; font-weight:800; margin-top:4px;">拍 #3</span>
+            </div>
+            <div class="paddle-handle"></div>
+          </div>
+          <!-- Paddle 4 -->
+          <div class="paddle-card" id="p-card-4" onclick="selectPaddle(4)">
+            <div class="paddle-head face-down" id="p-head-4">
+              <span id="p-icon-4" style="font-size:20px;">❓</span>
+              <span id="p-name-4" style="font-size:11px; font-weight:800; margin-top:4px;">拍 #4</span>
+            </div>
+            <div class="paddle-handle"></div>
+          </div>
+          <!-- Paddle 5 -->
+          <div class="paddle-card" id="p-card-5" onclick="selectPaddle(5)">
+            <div class="paddle-head face-down" id="p-head-5">
+              <span id="p-icon-5" style="font-size:20px;">❓</span>
+              <span id="p-name-5" style="font-size:11px; font-weight:800; margin-top:4px;">拍 #5</span>
+            </div>
+            <div class="paddle-handle"></div>
+          </div>
+          <!-- Paddle 6 -->
+          <div class="paddle-card" id="p-card-6" onclick="selectPaddle(6)">
+            <div class="paddle-head face-down" id="p-head-6">
+              <span id="p-icon-6" style="font-size:20px;">❓</span>
+              <span id="p-name-6" style="font-size:11px; font-weight:800; margin-top:4px;">拍 #6</span>
+            </div>
+            <div class="paddle-handle"></div>
+          </div>
+          <!-- Paddle 7 -->
+          <div class="paddle-card" id="p-card-7" onclick="selectPaddle(7)">
+            <div class="paddle-head face-down" id="p-head-7">
+              <span id="p-icon-7" style="font-size:20px;">❓</span>
+              <span id="p-name-7" style="font-size:11px; font-weight:800; margin-top:4px;">拍 #7</span>
+            </div>
+            <div class="paddle-handle"></div>
+          </div>
+          <!-- Paddle 8 -->
+          <div class="paddle-card" id="p-card-8" onclick="selectPaddle(8)">
+            <div class="paddle-head face-down" id="p-head-8">
+              <span id="p-icon-8" style="font-size:20px;">❓</span>
+              <span id="p-name-8" style="font-size:11px; font-weight:800; margin-top:4px;">拍 #8</span>
+            </div>
+            <div class="paddle-handle"></div>
+          </div>
+        </div>
+
+        <div class="table-footer">
+          <span>🪵 6 木頭拍 (+10)</span>
+          <span>🪓 1 玻纖拍 (+20)</span>
+          <span style="color:#38bdf8; font-weight:800;">⚡ 1 碳纖拍 (+30)</span>
+        </div>
+      </section>
+
+      <!-- 右側：全家冷藏櫃 8 格 (4 欄 × 2 列) -->
+      <section class="fridge-section">
+        <div>
+          <div class="fridge-header">
+            <div class="fridge-title">
+              <span class="pulse-dot"></span>
+              【牆面靶位】全家便利商店保鮮冷藏櫃
+            </div>
+            <span style="font-size:11px; color:#94a3b8;">7℃ 鮮度把關</span>
+          </div>
+          <div style="font-size:12px; color:#94a3b8; margin-bottom:8px;">
+            翻開球拍看標章，拿匹克球打擊對應櫃位！
+          </div>
+        </div>
+
+        <div class="fridge-grid">
+          <!-- Shelf 1 -->
+          <div class="shelf-cell" id="shelf-1">
+            <div class="cell-top"><span>#1 號格</span><span style="color:#10b981;">10分</span></div>
+            <div class="cell-icon">🍞</div>
+            <div>
+              <div class="cell-name">全家匠土司</div>
+              <div class="cell-badge">🌿🌿 雙潔淨</div>
+            </div>
+          </div>
+          <!-- Shelf 2 -->
+          <div class="shelf-cell" id="shelf-2">
+            <div class="cell-top"><span>#2 號格</span><span style="color:#10b981;">10分</span></div>
+            <div class="cell-icon">🍱</div>
+            <div>
+              <div class="cell-name">微波鮮食便當</div>
+              <div class="cell-badge">🌿 潔淨標章</div>
+            </div>
+          </div>
+          <!-- Shelf 3 -->
+          <div class="shelf-cell" id="shelf-3">
+            <div class="cell-top"><span>#3 號格</span><span style="color:#10b981;">10分</span></div>
+            <div class="cell-icon">🥛</div>
+            <div>
+              <div class="cell-name">純濃燕麥奶</div>
+              <div class="cell-badge" style="color:#c084fc;">✨ 100%無添加</div>
+            </div>
+          </div>
+          <!-- Shelf 4 -->
+          <div class="shelf-cell" id="shelf-4">
+            <div class="cell-top"><span>#4 號格</span><span style="color:#10b981;">10分</span></div>
+            <div class="cell-icon">🫘</div>
+            <div>
+              <div class="cell-name">官田綠保菱角</div>
+              <div class="cell-badge">🐾 綠保標章</div>
+            </div>
+          </div>
+          <!-- Shelf 5 -->
+          <div class="shelf-cell" id="shelf-5">
+            <div class="cell-top"><span>#5 號格</span><span style="color:#10b981;">10分</span></div>
+            <div class="cell-icon">🍌</div>
+            <div>
+              <div class="cell-name">友善石虎香蕉</div>
+              <div class="cell-badge" style="color:#f59e0b;">🐯 友善石虎</div>
+            </div>
+          </div>
+          <!-- Shelf 6 -->
+          <div class="shelf-cell" id="shelf-6">
+            <div class="cell-top"><span>#6 號格</span><span style="color:#10b981;">10分</span></div>
+            <div class="cell-icon">🥗</div>
+            <div>
+              <div class="cell-name">有機沙拉盒</div>
+              <div class="cell-badge" style="color:#2dd4bf;">🌾 臺灣有機</div>
+            </div>
+          </div>
+          <!-- Shelf 7 -->
+          <div class="shelf-cell" id="shelf-7" style="border-color:rgba(56,189,248,0.4);">
+            <div class="cell-top"><span style="color:#38bdf8; font-weight:800;">#7 號格</span><span style="color:#38bdf8; font-weight:800;">+20分</span></div>
+            <div class="cell-icon">🥚</div>
+            <div>
+              <div class="cell-name">生鮮履歷茶葉蛋</div>
+              <div class="cell-badge" style="color:#38bdf8;">📱 產銷履歷</div>
+            </div>
+          </div>
+          <!-- Shelf 8 -->
+          <div class="shelf-cell" id="shelf-8" style="border-color:rgba(34,211,238,0.7);">
+            <div class="cell-top"><span style="color:#22d3ee; font-weight:900;">#8 號格</span><span style="color:#22d3ee; font-weight:900;">+30分 ★</span></div>
+            <div class="cell-icon">💧</div>
+            <div>
+              <div class="cell-name">全家低碳包裝水</div>
+              <div class="cell-badge" style="color:#22d3ee;">👣 碳足跡</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fridge-catch">
+          🟡 50 顆匹克球落球槽（打完自動滾回底部，關主一秒收齊）
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  <script>
+    const paddles = {
+      1: { name: "雙潔淨標章", food: "全家匠土司", targetId: 1, type: "木頭拍", points: 10, bgClass: "face-wood", badge: "🌿🌿 雙潔淨" },
+      2: { name: "潔淨標章", food: "微波鮮食便當", targetId: 2, type: "木頭拍", points: 10, bgClass: "face-wood", badge: "🌿 潔淨" },
+      3: { name: "100%無添加", food: "純濃燕麥奶", targetId: 3, type: "木頭拍", points: 10, bgClass: "face-wood", badge: "✨ 100%無添加" },
+      4: { name: "綠色保育標章", food: "官田綠保菱角", targetId: 4, type: "木頭拍", points: 10, bgClass: "face-wood", badge: "🐾 綠保" },
+      5: { name: "友善石虎標章", food: "友善石虎香蕉", targetId: 5, type: "木頭拍", points: 10, bgClass: "face-wood", badge: "🐯 石虎" },
+      6: { name: "臺灣有機標章", food: "有機沙拉盒", targetId: 6, type: "木頭拍", points: 10, bgClass: "face-wood", badge: "🌾 有機" },
+      7: { name: "產銷履歷 (TAP)", food: "生鮮履歷茶葉蛋", targetId: 7, type: "🪓 玻璃纖維拍", points: 20, bgClass: "face-glass", badge: "📱 產銷履歷" },
+      8: { name: "碳足跡標籤", food: "全家低碳包裝水", targetId: 8, type: "⚡ 碳纖維神拍", points: 30, bgClass: "face-carbon", badge: "👣 碳標籤" }
+    };
+
+    let activePaddleId = null;
+    let score = 0;
+    let capturedCount = 0;
+    let capturedList = new Set();
+
+    function selectPaddle(id) {
+      if (capturedList.has(id)) return;
+
+      activePaddleId = id;
+      const p = paddles[id];
+
+      resetTargetHighlights();
+
+      // 翻開此球拍
+      const head = document.getElementById('p-head-' + id);
+      head.className = "paddle-head " + p.bgClass;
+      document.getElementById('p-icon-' + id).innerText = "🏓";
+      document.getElementById('p-name-' + id).innerHTML = `<div style="font-size:10px; font-weight:900;">${p.badge}</div><div style="font-size:9px; color:#e2e8f0;">${p.type}</div>`;
+
+      // 牆面高亮
+      document.getElementById('shelf-' + p.targetId).classList.add('target-active');
+
+      updateActionBar('flipped', p);
+    }
+
+    function simulateHit() {
+      if (!activePaddleId) return;
+      const id = activePaddleId;
+      const p = paddles[id];
+
+      capturedList.add(id);
+      capturedCount++;
+      score += p.points;
+
+      // 球拍收走
+      const card = document.getElementById('p-card-' + id);
+      card.classList.add('collected');
+      document.getElementById('p-icon-' + id).innerText = "🏆";
+      document.getElementById('p-name-' + id).innerText = "已收走";
+
+      // 牆面鎖定
+      const shelf = document.getElementById('shelf-' + p.targetId);
+      shelf.classList.remove('target-active');
+      shelf.classList.add('hit-locked');
+
+      document.getElementById('score-text').innerText = score;
+      document.getElementById('captured-count').innerText = `${capturedCount} / 8`;
+      document.getElementById('table-remaining').innerText = `${8 - capturedCount} 支`;
+
+      activePaddleId = null;
+      updateActionBar('hit_success', p);
+    }
+
+    function simulateMiss() {
+      if (!activePaddleId) return;
+      const id = activePaddleId;
+      const p = paddles[id];
+
+      // 蓋回原位
+      const head = document.getElementById('p-head-' + id);
+      head.className = "paddle-head face-down";
+      document.getElementById('p-icon-' + id).innerText = "❓";
+      document.getElementById('p-name-' + id).innerText = "拍 #" + id;
+
+      document.getElementById('shelf-' + p.targetId).classList.remove('target-active');
+
+      activePaddleId = null;
+      updateActionBar('miss_covered', p);
+    }
+
+    function resetTargetHighlights() {
+      for (let i = 1; i <= 8; i++) {
+        if (!capturedList.has(i)) {
+          document.getElementById('shelf-' + i).classList.remove('target-active');
+        }
+      }
+    }
+
+    function updateActionBar(state, p) {
+      const icon = document.getElementById('action-icon');
+      const title = document.getElementById('action-step-title');
+      const desc = document.getElementById('action-instruction');
+      const btns = document.getElementById('action-buttons');
+
+      if (state === 'flipped') {
+        icon.innerText = "🎯";
+        title.innerText = `已翻開【${p.name}】(${p.type})！`;
+        desc.innerHTML = `請持拍瞄準冷藏櫃 <span style="color:#f59e0b; font-weight:800;">#${p.targetId} 號【${p.food}】</span>！揮拍打擊！`;
+        btns.innerHTML = `
+          <button onclick="simulateHit()" class="btn btn-green">
+            ✅ 命中！收走球拍 (+${p.points}分)
+          </button>
+          <button onclick="simulateMiss()" class="btn btn-red">
+            ❌ 沒打中...蓋回桌上原位！
+          </button>
+        `;
+      } else if (state === 'hit_success') {
+        icon.innerText = "🎉";
+        title.innerText = "漂亮！補貨成功！";
+        desc.innerText = `成功命中！【${p.type}】收走加 ${p.points} 分！請下一位同學上去翻牌！`;
+        btns.innerHTML = `<span style="font-size:12px; color:#10b981; font-weight:800; padding:8px;">球拍已收回隊伍！</span>`;
+      } else if (state === 'miss_covered') {
+        icon.innerText = "🔄";
+        title.innerText = "可惜沒打中！球拍正面朝下蓋回桌上！";
+        desc.innerText = `換下一棒上去抽牌！全隊同學要記住這支【${p.name}】剛剛放在哪裡！`;
+        btns.innerHTML = `<span style="font-size:12px; color:#f59e0b; font-weight:800; padding:8px;">球拍已蓋回檯面</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
